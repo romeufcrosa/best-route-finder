@@ -1,0 +1,269 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "contact": {
+            "name": "Romeu Rosa",
+            "url": "https://github.com/romeufcrosa/best-route-finder"
+        },
+        "description": "API To Calculate Optimal Shipping Routes",
+        "version": "1.0.0",
+        "title": "Best Route Finder API"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/api/{version}",
+            "description": "Best Route Finder API",
+            "variables": {
+                "version": {
+                    "default": "v1"
+                }
+            }
+        }
+    ],
+    "tags": [
+        {
+            "name": "BestRouteFinderAPI",
+            "externalDocs": {
+                "description": "Github Docs",
+                "url": "https://"
+            }
+        }
+    ],
+    "paths": {
+        "/nodes": {
+            "description": "Insert a new Node",
+            "post": {
+                "tags": [
+                    "Nodes"
+                ],
+                "summary": "Insert a new Node into the system",
+                "operationId": "nodes",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NodesRequest"
+                            },
+                            "examples": {
+                                "aNode": {
+                                    "summary": "Just a simple Node",
+                                    "value": {
+                                        "name": "Node_A"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NodesResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/edges": {
+            "description": "Insert a new Edge",
+            "post": {
+                "tags": [
+                    "Edges"
+                ],
+                "summary": "Insert a new Edge into the system",
+                "operationId": "edges",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EdgesRequest"
+                            },
+                            "examples": {
+                                "anEdge": {
+                                    "summary": "Just a simple Edge",
+                                    "value": {
+                                        "from_id": 3,
+                                        "to_id": 2,
+                                        "cost": 12,
+                                        "duration": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EdgesResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/routes/from/{from_id}/to/{to_id}": {
+            "description": "Get best route from origin to destination",
+            "get": {
+                "tags": [
+                    "route"
+                ],
+                "summary": "Get best route",
+                "operationId": "routes",
+                "parameters": [
+                    {
+                        "name": "from_id",
+                        "in": "path",
+                        "description": "id of the origin node",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "to_id",
+                        "in": "path",
+                        "description": "id of the destination node",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRouteResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "NodesRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EdgesRequest": {
+                "type": "object",
+                "properties": {
+                    "from_id": {
+                        "type": "integer"
+                    },
+                    "to_id": {
+                        "type": "integer"
+                    },
+                    "cost": {
+                        "type": "integer"
+                    },
+                    "duration": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "NodesResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "node identifier",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Node Name",
+                        "example": "home"
+                    }
+                }
+            },
+            "EdgesResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "edge identifier",
+                        "example": 1
+                    },
+                    "from_id": {
+                        "type": "integer",
+                        "description": "identifier of edge origin node",
+                        "example": 2
+                    },
+                    "to_id": {
+                        "type": "integer",
+                        "description": "identifier of edge destination node",
+                        "example": 3
+                    },
+                    "cost": {
+                        "type": "integer",
+                        "description": "cost of edge travel",
+                        "example": 10
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "description": "time it takes to travel the edge",
+                        "example": 1
+                    }
+                }
+            },
+            "GetRouteResponse": {
+                "type": "object",
+                "properties": {
+                    "voyage": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Node"
+                        }
+                    },
+                    "cost": {
+                        "type": "integer",
+                        "description": "cost of the trip from origin to destination",
+                        "example": 32
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "description": "duration of the trip from origin to destination",
+                        "example": 10
+                    }
+                }
+            },
+            "Node": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "node identifier",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Node Name",
+                        "example": "home"
+                    }
+                }
+            }
+        }
+    }
+}
