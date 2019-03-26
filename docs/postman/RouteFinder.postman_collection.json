@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "e5608c75-17aa-4043-8fb6-be654adefd1a",
+		"name": "RouteFinder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateNode",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Node_A\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/nodes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"nodes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEdge",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"from_id\": 1,\n\t\"to_id\": 2,\n\t\"cost\": 12,\n\t\"duration\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/edges",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"edges"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRoute",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/routes/from/1/to/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"routes",
+						"from",
+						"1",
+						"to",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

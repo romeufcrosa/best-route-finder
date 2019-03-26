@@ -1,0 +1,17 @@
+{
+    "env": "tests",
+    "listen_addr": ":8080",
+    "log": {
+        "level:": "DEBUG"
+    },
+    "db": {
+        "address": "localhost:3306",
+        "password": "demo",
+        "database": "routes",
+        "username": "demo",
+        "max_conn": 5,
+        "max_idle_conns": 3,
+        "conn_max_lifetime_hours": 2,
+        "timeout_ms": 200
+    }
+}
