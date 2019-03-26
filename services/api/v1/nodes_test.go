@@ -29,6 +29,8 @@ func TestAddNodeSucess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err.Error())
 	}
+	tests.ClearTables(sqlPool)
+
 	params := providers.NewParams(sqlPool)
 	providers.Configure(params, func() bool {
 		return true

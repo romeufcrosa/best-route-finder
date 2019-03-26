@@ -26,14 +26,15 @@ var (
 func TestEdgesSuccess(t *testing.T) {
 	RegisterTestingT(t)
 
+	var (
+		returned, expected domain.Edge
+	)
+
 	payload, err := fixtures.LoadJSON("testdata/edges_post_req.json")
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	var (
-		returned, expected domain.Edge
-	)
 	response, err := fixtures.LoadJSON("testdata/edges_post_res.json")
 	if err != nil {
 		t.Fatal(err.Error())
@@ -126,8 +127,9 @@ func init() {
 	configurations.Load(ctx, reader)
 
 	sqlPool, _ := configurations.Pool()
-	params := providers.NewParams(sqlPool)
+	tests.ClearTables(sqlPool)
 
+	params := providers.NewParams(sqlPool)
 	providers.Configure(params, func() bool {
 		return true
 	})

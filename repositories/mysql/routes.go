@@ -112,15 +112,12 @@ func (r Routes) AddNode(ctx context.Context, node domain.Node) (result domain.No
 
 // GetRoute ...
 func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map[int][]domain.Edge, nodes []*domain.Node, err error) {
-	// func (r Routes) GetRoute(ctx context.Context, origin, destination int) (edges map[int][]*domain.Node, nodes []*domain.Node, err error) {
 	var (
 		rows         *sql.Rows
 		closeErr     error
 		visited      bool
 		vOriginNodes = make(map[int]bool)
-		// vDestinationNodes = make(map[int]bool)
 	)
-	// edges = make(map[int][]*domain.Node)
 	near = make(map[int][]domain.Edge)
 
 	rows, err = r.pool.QueryContext(ctx, getEdges)
@@ -157,7 +154,7 @@ func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map
 			ID:   route.ToID,
 			Name: route.ToName,
 		}
-		// edges[originNode.ID] = append(edges[originNode.ID], destinationNode)
+
 		edge := domain.Edge{
 			EdgeID:   route.EdgeID,
 			From:     *originNode,
@@ -166,12 +163,6 @@ func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map
 			Duration: route.Duration,
 		}
 		near[originNode.ID] = append(near[originNode.ID], edge)
-		// if visited = vDestinationNodes[destinationNode.ID]; !visited {
-		// 	vDestinationNodes[destinationNode.ID] = true
-		// 	nodes = append(nodes, destinationNode)
-		// 	edges[originNode.ID] = append(edges[originNode.ID], destinationNode)
-		// }
-
 	}
 
 	return

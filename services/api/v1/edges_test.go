@@ -3,6 +3,8 @@ package v1
 import (
 	"testing"
 
+	"github.com/romeufcrosa/best-route-finder/tests"
+
 	. "github.com/onsi/gomega"
 	"github.com/romeufcrosa/best-route-finder/configurations"
 	"github.com/romeufcrosa/best-route-finder/domain/entities"
@@ -17,6 +19,8 @@ func TestAddEdgeSucess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err.Error())
 	}
+	tests.ClearTables(sqlPool)
+
 	params := providers.NewParams(sqlPool)
 	providers.Configure(params, func() bool {
 		return true

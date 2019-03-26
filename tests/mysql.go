@@ -12,8 +12,10 @@ import (
 )
 
 var (
-	pool   *sql.DB
-	dbOnce sync.Once
+	pool       *sql.DB
+	dbOnce     sync.Once
+	clearEdges = `TRUNCATE edges`
+	clearNodes = `TRUNCATE nodes`
 )
 
 // GetPool returns a connection for MySQL
@@ -30,6 +32,21 @@ func GetPool() *sql.DB {
 	})
 
 	return pool
+}
+
+// ClearTables ...
+func ClearTables(db *sql.DB) {
+	tx, err := db.Begin()
+	checkError(err)
+
+	_, err = tx.Exec(clearEdges)
+	checkError(err)
+
+	_, err = tx.Exec(clearNodes)
+	checkError(err)
+
+	err = tx.Commit()
+	checkError(err)
 }
 
 // PrepareTables prepares the tables for freyr
