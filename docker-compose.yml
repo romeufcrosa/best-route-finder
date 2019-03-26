@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mysql:
+    container_name: routes-db
+    ports:
+      - "3306:3306"
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: routes
+      MYSQL_PASSWORD: demo
+      MYSQL_USER: demo
+      MYSQL_ROOT_PASSWORD: notforproduction
+
+  # api:
+  #   container_name: routes-api
+  #   build: ./
+  #   depends_on:
+  #     - mysql
+  #   links:
+  #     - "mysql:database"
+  #   environment:
+  #     - ENV=docker
+  #   ports:
+  #     - "8080:8080"
