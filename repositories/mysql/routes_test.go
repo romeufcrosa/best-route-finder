@@ -18,6 +18,7 @@ func TestEdgeStore(t *testing.T) {
 	RegisterTestingT(t)
 
 	repository := NewRoutes(pool)
+	tests.ClearTables(pool)
 
 	edge := domain.Edge{
 		From:     domain.Node{},
@@ -38,6 +39,7 @@ func TestNodeStore(t *testing.T) {
 	RegisterTestingT(t)
 
 	repository := NewRoutes(pool)
+	tests.ClearTables(pool)
 
 	node := domain.Node{
 		Name: "Node_A",
@@ -55,6 +57,7 @@ func TestGetRoutes(t *testing.T) {
 	RegisterTestingT(t)
 
 	repository := NewRoutes(pool)
+	tests.ClearTables(pool)
 
 	NodeA := domain.Node{
 		Name: "Node_A",
@@ -106,8 +109,4 @@ func TestGetRoutes(t *testing.T) {
 	expectedNodes = append(expectedNodes, &insNodeB)
 
 	Expect(nodes).To(Equal(expectedNodes), "should match returned nodes")
-}
-
-func init() {
-	tests.ClearTables(pool)
 }

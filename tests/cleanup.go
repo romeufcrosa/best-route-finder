@@ -11,5 +11,5 @@ import "github.com/romeufcrosa/best-route-finder/tests"
 func main() {
 	pool := tests.GetPool()
 
-	tests.CleanupForTests(pool)
+	tests.Cleanup(pool)
 }

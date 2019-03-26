@@ -90,6 +90,10 @@ func TestRoutesSuccess(t *testing.T) {
 		expected, returned domain.Route
 	)
 
+	pool := tests.GetPool()
+	tests.ClearTables(pool)
+	tests.SetupRoutesScenario(pool)
+
 	expected = domain.Route{
 		Voyage: []*domain.Node{
 			{
@@ -127,7 +131,6 @@ func init() {
 	configurations.Load(ctx, reader)
 
 	sqlPool, _ := configurations.Pool()
-	tests.ClearTables(sqlPool)
 
 	params := providers.NewParams(sqlPool)
 	providers.Configure(params, func() bool {

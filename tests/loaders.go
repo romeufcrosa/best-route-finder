@@ -39,5 +39,23 @@ func Node(pool *sql.DB, nodeID int) (result domain.Node) {
 // SetupRoutesScenario ...
 func SetupRoutesScenario(pool *sql.DB) {
 	ClearTables(pool)
-	ExecuteSQL(pool, "../../../assets/sql/03_route_scenario.sql")
+	stmt := `
+	INSERT INTO nodes(node_id, name) VALUES
+		(NULL, 'Node_A'),
+		(NULL, 'Node_B'),
+		(NULL, 'Node_C'),
+		(NULL, 'Node_D')
+	`
+	_, err := pool.Exec(stmt)
+	checkError(err)
+
+	stmt = `
+	INSERT INTO edges(edge_id, from_id, to_id, duration, cost) VALUES
+		(NULL, 1, 3, 1, 20),
+		(NULL, 1, 4, 1, 14),
+		(NULL, 3, 2, 1, 12),
+		(NULL, 4, 2, 1, 8)
+	`
+	_, err = pool.Exec(stmt)
+	checkError(err)
 }
