@@ -20,7 +20,11 @@ var (
 		VALUES(NULL, ?)
 	`
 
-	getEdges = `
+	getEdges = `SELECT edge_id, from_id, to_id, duration, cost FROM edges`
+
+	getNodes = `SELECT node_id, name FROM nodes`
+
+	getRoutes = `
 		SELECT e.*, n1.Name AS FromName, n2.Name AS ToName FROM edges e
 		JOIN nodes n1 ON e.from_id = n1.node_id
 		JOIN nodes n2 ON e.to_id = n2.node_id
@@ -110,7 +114,7 @@ func (r Routes) AddNode(ctx context.Context, node domain.Node) (result domain.No
 	return
 }
 
-// GetRoute ...
+// GetRoute returns the
 func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map[int][]domain.Edge, nodes []*domain.Node, err error) {
 	var (
 		rows         *sql.Rows
@@ -120,7 +124,7 @@ func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map
 	)
 	near = make(map[int][]domain.Edge)
 
-	rows, err = r.pool.QueryContext(ctx, getEdges)
+	rows, err = r.pool.QueryContext(ctx, getRoutes)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "could not perform query")
 	}
@@ -166,4 +170,68 @@ func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map
 	}
 
 	return
+}
+
+// GetNodes returns all the nodes
+func (r Routes) GetNodes(ctx context.Context) ([]domain.Node, error) {
+	var (
+		closeErr, err error
+		nodes         []domain.Node
+		rows          *sql.Rows
+	)
+	rows, err = r.pool.QueryContext(ctx, getNodes)
+	if err != nil {
+		return nil, errors.Wrap(err, "could not perform query")
+	}
+	defer func() {
+		if closeErr = rows.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
+
+	for rows.Next() {
+		var node domain.Node
+		if err = rows.Scan(
+			&node.ID, &node.Name,
+		); err != nil {
+			return nil, errors.Wrap(err, "could not scan rule")
+		}
+
+		nodes = append(nodes, node)
+	}
+
+	return nil, nil
+}
+
+// GetEdges returns all the edges
+func (r Routes) GetEdges(ctx context.Context) ([]domain.EdgeDTO, error) {
+	var (
+		closeErr, err error
+		edges         []domain.EdgeDTO
+		rows          *sql.Rows
+	)
+	rows, err = r.pool.QueryContext(ctx, getEdges)
+	if err != nil {
+		return nil, errors.Wrap(err, "could not perform query")
+	}
+	defer func() {
+		if closeErr = rows.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
+
+	for rows.Next() {
+		var edge domain.EdgeDTO
+		if err = rows.Scan(
+			&edge.ID, &edge.FromID,
+			&edge.ToID, &edge.Duration,
+			&edge.Cost,
+		); err != nil {
+			return nil, errors.Wrap(err, "could not scan rule")
+		}
+
+		edges = append(edges, edge)
+	}
+
+	return nil, nil
 }
