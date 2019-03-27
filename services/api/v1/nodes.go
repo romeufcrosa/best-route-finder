@@ -8,7 +8,7 @@ import (
 	"github.com/romeufcrosa/best-route-finder/providers"
 )
 
-// AddNode ...
+// AddNode handles the endpoint to insert a node
 func AddNode(params Params) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		ctx := r.Context()

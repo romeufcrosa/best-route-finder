@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// ErrNotFound ...
+// commonly used errors
 var (
 	ErrNotFound      = errors.New("route does not exist")
 	ErrCartNoContent = errors.New("no cart data provided")

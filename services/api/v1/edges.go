@@ -10,7 +10,7 @@ import (
 	"github.com/romeufcrosa/best-route-finder/providers"
 )
 
-// AddEdge ...
+// AddEdge handles the endpoint to add an edge
 func AddEdge(params Params) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		ctx := r.Context()

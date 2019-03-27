@@ -5,14 +5,14 @@ import (
 	"github.com/romeufcrosa/best-route-finder/repositories/mysql"
 )
 
-// Provider list...
+// Provider list
 var (
 	Routes = Provider("repositories/mysql/routes")
 )
 
-// RegisterRepositoryProviders ...
+// RegisterRepositoryProviders registers the storage providers for DI
 func RegisterRepositoryProviders() {
-	Register(Routes, func() (provider interface{}, err error) { // nolint:errcheck
+	Register(Routes, func() (provider interface{}, err error) {
 		return mysql.NewRoutes(manufacturer.params.pool), nil
 	})
 }

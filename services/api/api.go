@@ -10,7 +10,6 @@ import (
 
 // Router starts a new HTTP Router
 func Router() http.Handler {
-	// Logging := middlewares.Logging
 	params := v1.Params{}
 
 	router := httprouter.New()

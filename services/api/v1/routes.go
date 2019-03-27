@@ -8,7 +8,7 @@ import (
 	"github.com/romeufcrosa/best-route-finder/providers"
 )
 
-// GetRoute ...
+// GetRoute handles a request to the endpoint
 func GetRoute(params Params) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		ctx := r.Context()

@@ -36,7 +36,7 @@ type Routes struct {
 	pool *sql.DB
 }
 
-// Route ...
+// Route struct that identities a data storage represenation of a route
 type Route struct {
 	EdgeID   int
 	FromID   int
@@ -52,7 +52,7 @@ func NewRoutes(pool *sql.DB) Routes {
 	return Routes{pool}
 }
 
-// AddEdge ...
+// AddEdge inserts an edge entity into the database
 func (r Routes) AddEdge(ctx context.Context, edge domain.Edge) (result domain.Edge, err error) {
 	err = internal.InTransaction(ctx, r.pool, func(ctx context.Context, tx *sql.Tx) error {
 		var res sql.Result
@@ -83,7 +83,7 @@ func (r Routes) AddEdge(ctx context.Context, edge domain.Edge) (result domain.Ed
 	return
 }
 
-// AddNode ...
+// AddNode inserts a node entity into the database
 func (r Routes) AddNode(ctx context.Context, node domain.Node) (result domain.Node, err error) {
 	err = internal.InTransaction(ctx, r.pool, func(ctx context.Context, tx *sql.Tx) error {
 		var res sql.Result
@@ -114,7 +114,8 @@ func (r Routes) AddNode(ctx context.Context, node domain.Node) (result domain.No
 	return
 }
 
-// GetRoute returns the
+// GetRoute returns the neighbours and nodes to calculate the optimal route
+// TODO: should only return the Route, the rest should be calculated in the interactor
 func (r Routes) GetRoute(ctx context.Context, origin, destination int) (near map[int][]domain.Edge, nodes []*domain.Node, err error) {
 	var (
 		rows         *sql.Rows
