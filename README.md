@@ -123,6 +123,7 @@ curl -X GET \
 Due to time constraints this first iteration is lacking in features and requiring some technical improvements.
 
 - [ ] Use the actual queue implementation which has concurrency safety instead of the current solution with a makeshift queue using maps.
+- [ ] Add mock package [Mockery](https://github.com/vektra/mockery) to be able to mock the repository interfaces in tests.
 - [ ] Add more tests, current ones are mostly aiming for happy path.
 - [ ] DRY it up, there's probably some methods that are either very similar or identical.
 - [ ] SOLIDify it more, some methods are doing a bit more than I want them to... some extraction and refactoring is required.

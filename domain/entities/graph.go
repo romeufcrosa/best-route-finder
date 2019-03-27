@@ -50,8 +50,10 @@ func (g *Graph) Traverse(source, destination *Node) (PathMatrix, CostMatrix) {
 		last := path[len(path)-1]
 
 		if last.ID == destination.ID {
-			pMatrix.Push(currentPath, path)
-			cMatrix.Push(currentPath, pMatrix, traversal)
+			if len(path) > 2 { // skip direct paths
+				pMatrix.Push(currentPath, path)
+				cMatrix.Push(currentPath, pMatrix, traversal)
+			}
 			currentPath++
 		}
 

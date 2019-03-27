@@ -71,6 +71,13 @@ func (r Routes) GetRoute(ctx context.Context, origin, destination int) (domain.R
 }
 
 func findOptimalRoute(pMatrix domain.PathMatrix, cMatrix domain.CostMatrix) domain.Route {
+	var (
+		route  domain.Route
+		single bool
+	)
+	if route, single = checkForSolitaryRoute(pMatrix, cMatrix); single {
+		return route
+	}
 	previousCost := cMatrix[0].Cost
 	previousDuration := cMatrix[0].Duration
 	chosenPath := 0
@@ -89,4 +96,21 @@ func findOptimalRoute(pMatrix domain.PathMatrix, cMatrix domain.CostMatrix) doma
 		Cost:     previousCost,
 		Duration: previousDuration,
 	}
+}
+
+func checkForSolitaryRoute(pMatrix domain.PathMatrix, cMatrix domain.CostMatrix) (domain.Route, bool) {
+	// TODO: change this so it's no longer necessary to calculate the existing key
+	if len(cMatrix) == 1 && len(pMatrix) == 1 {
+		var key int
+		for singleKey := range pMatrix {
+			key = singleKey
+		}
+		return domain.Route{
+			Voyage:   pMatrix[key],
+			Cost:     cMatrix[key].Cost,
+			Duration: cMatrix[key].Duration,
+		}, true
+	}
+
+	return domain.Route{}, false
 }
