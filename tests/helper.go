@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path"
@@ -19,18 +20,12 @@ var (
 
 // ConfsReader prepares the given configurations
 func ConfsReader() readers.FileReader {
-	PrepareEnv()
+	currentEnv := os.Getenv("ENV")
 
 	_, filename, _, _ := runtime.Caller(0)
 	file := path.Join(path.Dir(filename), "..")
 
-	return readers.NewFileReader(file + "/configurations/tests.json")
-}
-
-// PrepareEnv prepares the needed env vars if needed
-// nolint
-func PrepareEnv() {
-	os.Setenv("ENV", "tests")
+	return readers.NewFileReader(file + fmt.Sprintf("/configurations/%s.json", currentEnv))
 }
 
 // SetTransport function to set the default http pool.

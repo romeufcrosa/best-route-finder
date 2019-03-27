@@ -6,7 +6,6 @@ import (
 	"github.com/romeufcrosa/best-route-finder/tests"
 
 	. "github.com/onsi/gomega"
-	"github.com/romeufcrosa/best-route-finder/configurations"
 	domain "github.com/romeufcrosa/best-route-finder/domain/entities"
 	"github.com/romeufcrosa/best-route-finder/providers"
 )
@@ -14,10 +13,7 @@ import (
 func TestGetRoutesSuccess(t *testing.T) {
 	RegisterTestingT(t)
 
-	sqlPool, err := configurations.Pool()
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	sqlPool := tests.GetPool()
 	tests.SetupRoutesScenario(sqlPool)
 
 	params := providers.NewParams(sqlPool)

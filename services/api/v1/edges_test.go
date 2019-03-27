@@ -6,7 +6,6 @@ import (
 	"github.com/romeufcrosa/best-route-finder/tests"
 
 	. "github.com/onsi/gomega"
-	"github.com/romeufcrosa/best-route-finder/configurations"
 	"github.com/romeufcrosa/best-route-finder/domain/entities"
 	"github.com/romeufcrosa/best-route-finder/providers"
 	"github.com/romeufcrosa/best-route-finder/tests/fixtures"
@@ -15,10 +14,7 @@ import (
 func TestAddEdgeSucess(t *testing.T) {
 	RegisterTestingT(t)
 
-	sqlPool, err := configurations.Pool()
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	sqlPool := tests.GetPool()
 	tests.ClearTables(sqlPool)
 
 	params := providers.NewParams(sqlPool)
@@ -27,7 +23,7 @@ func TestAddEdgeSucess(t *testing.T) {
 	})
 
 	edge := entities.Edge{}
-	err = fixtures.LoadJSONInto("testdata/an_edge.json", &edge)
+	err := fixtures.LoadJSONInto("testdata/an_edge.json", &edge)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

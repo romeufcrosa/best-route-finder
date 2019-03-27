@@ -33,14 +33,6 @@ make install
 make local-env
 ```
 
-#### Start the API
-
-```bash
-make local-run
-```
-
->Please note that this cleans and then bootstraps the database with some data so that the user already has something to work with
-
 #### Run Tests
 
 ```bash
@@ -48,6 +40,14 @@ make test
 ```
 
 >Please note that running the tests will clean the local DB beforehand
+
+#### Start the API
+
+```bash
+make local-run
+```
+
+>Please note that this cleans and then bootstraps the database with some data so that the user already has something to work with
 
 ### Running with Docker
 
@@ -71,6 +71,15 @@ It will then be exposed in **localhost:8080**. So any requests would work the sa
 make docker-tests
 ```
 
+>Please note that like with the local test run, this is a destructive operation on the database
+>So if you intend to boostrap it again with the default data please run the next command
+
+#### Bootstrapping MySQL container with data
+
+```bash
+make docker-boostrap
+```
+
 ### Using
 
 #### Postman
@@ -78,11 +87,43 @@ make docker-tests
 In folder `docs/postman` there is a JSON file of a Postman collection that contains all the possible requests the API currently supports.
 Just import it to your Postman and it will create a *RouteFinder* collection.
 
+#### cURL
+
+##### Add Node
+
+```bash
+curl -X POST \
+  http://localhost:8080/api/v1/nodes \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{"name": "Node_A"}'
+```
+
+##### Add Edge
+
+```bash
+curl -X POST \
+  http://localhost:8080/api/v1/edges \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{"from_id": 1,"to_id": 2,"cost": 12,"duration": 1}'
+```
+
+##### Get Best Route from Origin to Destination
+
+```bash
+curl -X GET \
+  http://localhost:8080/api/v1/routes/from/1/to/2 \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache'
+```
+
 ### TODO List
+
 Due to time constraints this first iteration is lacking in features and requiring some technical improvements.
 
 - [ ] Add more tests, current ones are mostly aiming for happy path.
-- [ ] DRY it up, there's probably some methods that are either very similar or identical. 
+- [ ] DRY it up, there's probably some methods that are either very similar or identical.
 - [ ] SOLIDify it more, some methods are doing a bit more than I want them to... some extraction and refactoring is required.
 - [ ] Find a better bootstrap of the database for tests without compromising the data for local run and vice-versa.
 - [ ] Add constraints on the database structure so that edges/nodes can't be duplicated.

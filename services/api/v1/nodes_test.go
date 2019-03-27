@@ -25,11 +25,7 @@ var (
 func TestAddNodeSucess(t *testing.T) {
 	RegisterTestingT(t)
 
-	sqlPool, err := configurations.Pool()
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-	tests.ClearTables(sqlPool)
+	sqlPool := tests.GetPool()
 
 	params := providers.NewParams(sqlPool)
 	providers.Configure(params, func() bool {
@@ -37,7 +33,7 @@ func TestAddNodeSucess(t *testing.T) {
 	})
 
 	node := entities.Node{}
-	err = fixtures.LoadJSONInto("testdata/a_node.json", &node)
+	err := fixtures.LoadJSONInto("testdata/a_node.json", &node)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

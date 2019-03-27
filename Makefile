@@ -6,6 +6,9 @@ bootstrap:
 	@echo "=== Preparing databases ==="
 	MYSQL_ADDRESS=${MYSQL_ADDRESS} go run tests/bootstrap.go
 
+docker-boostrap:
+	@echo "=== Boostrapping MySQL container with data ==="
+	docker exec -it routes-api go run /go/src/github.com/romeufcrosa/best-route-finder/tests/bootstrap.go
 docker-build:
 	@echo "=== Building docker image ==="
 	docker build -t route-finder .
@@ -15,7 +18,12 @@ docker-local-run: local-env
 	sleep 15
 	@echo "MySQL should be ready... this needs to be improved"
 	docker run --name routes-api -d route-finder
-	docker exec -it routes-api go run tests/bootstrap.go
+	@echo "Populating database with some data"
+	docker exec -it routes-api go run /go/src/github.com/romeufcrosa/best-route-finder/tests/bootstrap.go
+
+docker-test:
+	@echo "=== Running tests in Docker container ==="
+	docker exec -it routes-api bash -c "cd /go/src/github.com/romeufcrosa/best-route-finder && go test -cover ./..."
 
 cleanup:
 	@echo "=== Flushing databases ==="

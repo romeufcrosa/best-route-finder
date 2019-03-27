@@ -52,13 +52,21 @@ func ClearTables(db *sql.DB) {
 // PrepareTables prepares the tables for freyr
 func PrepareTables(db *sql.DB) {
 	Cleanup(db)
-	ExecuteSQL(db, "assets/sql/02_content.sql")
+	path := "assets/sql"
+	if os.Getenv("ENV") == "docker" {
+		path = "/assets/sql"
+	}
+	ExecuteSQL(db, fmt.Sprintf("%s/02_content.sql", path))
 }
 
 // Cleanup does a cleanup of the database
 func Cleanup(db *sql.DB) {
-	ExecuteSQL(db, "assets/sql/01_cleanup.sql")
-	ExecuteSQL(db, "assets/sql/00_tables.sql")
+	path := "assets/sql"
+	if os.Getenv("ENV") == "docker" {
+		path = "/assets/sql"
+	}
+	ExecuteSQL(db, fmt.Sprintf("%s/01_cleanup.sql", path))
+	ExecuteSQL(db, fmt.Sprintf("%s/00_tables.sql", path))
 }
 
 // ExecuteSQL loads the SQL from the given file and executes them
